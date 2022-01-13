@@ -4,9 +4,11 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Items
+        title Links
     body 
-        ul
-            each item of inventory
-                li
-                    a(href=`/items/${item._id}`) #{item.name}
+        h1 These links are available: 
+        ul 
+            li
+                a(href="/items") View all Items 
+            li 
+                a(href="/warehouses") View all Warehouse Locations

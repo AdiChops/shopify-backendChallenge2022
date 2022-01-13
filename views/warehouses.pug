@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Warehouses
+    body 
+        h1 Warehouses 
+        if warehouses.length == 0
+            p No warehouse locations found 
+        else 
+            ul 
+                each warehouse of warehouses 
+                    li 
+                        a(href=`/warehouses/${warehouse._id}`) #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName} #{(new Intl.DisplayNames(['en'], { type: 'region' })).of(warehouse.country)}, #{warehouse.province} #{warehouse.postalCode})

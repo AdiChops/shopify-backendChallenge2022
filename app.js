@@ -16,10 +16,12 @@ app.use((req, res, next) => {
 
 /***** ROUTER SETUP *****/
 const itemsRouter = require("./routers/itemsRouter");
+const warehousesRouter = require("./routers/warehousesRouter");
 app.use("/items", itemsRouter);
+app.use("/warehouses", warehousesRouter);
 
 app.get("/", (req, res) => {
-  res.send("hello world");
+  res.render('home.pug');
 });
 
 /***** DB CONNECTION *****/
