@@ -2,3 +2,22 @@
     opacity: 0.5;
     cursor: pointer;
 }
+
+#saveBtn, #cancelBtn{
+    display: none;
+}
+.badge{
+    font-size: 1em;
+    margin:0.5em;
+}
+.badge-pill:nth-of-type(n){
+    background-color: rgb(238, 100, 36);
+}
+
+.badge-pill:nth-of-type(2n){
+    background-color: rgb(153, 197, 49);
+}
+
+.badge-pill:nth-of-type(3n){
+    background-color: rgb(24, 173, 116);
+}

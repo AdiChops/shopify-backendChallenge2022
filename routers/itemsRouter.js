@@ -28,7 +28,6 @@ router.get("/:id", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-  let it = new Item({ _id: req.params.id });
   Item.updateOne(
     { _id: req.params.id },
     {
@@ -44,6 +43,28 @@ router.put("/:id", (req, res) => {
       res.status(200).send();
     }
   );
+});
+
+router.post("/", (req, res) => {
+  let it = new Item({
+    name: req.body.name,
+    description: req.body.description,
+    stock: req.body.stock,
+    price: req.body.price,
+    tags: req.body.tags,
+    warehouseLocations: req.body.warehouseLocations,
+  });
+  it.save((err, result) => {
+    if (err) throw err;
+    res.status(201).send();
+  });
+});
+
+router.delete("/:id", (req, res) => {
+  Item.deleteOne({ _id: req.params.id }, (err, result) => {
+    if (err) throw err;
+    res.status(204).send();
+  });
 });
 
 /***** EXPORTING ROUTER *****/
