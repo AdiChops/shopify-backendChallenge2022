@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3001;
 app.set("views");
 app.set("view engine", "pug");
 app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 app.use((req, res, next) => {
   console.log(`${req.method}: ${req.path}`);

@@ -1,6 +1,7 @@
 /***** MODULE AND MODEL IMPORTS *****/
 const express = require("express");
 const Item = require("../models/itemModel");
+const Warehouse = require("../models/warehouseModel");
 
 /***** ROUTER SETUP *****/
 const router = express.Router();
@@ -17,17 +18,23 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  Item.findById(req.params.id, (err, result) => {
-    if (err) {
-      console.log(err);
-      throw err;
-    }
-    res.render("item", { item: result });
-    return;
-  }).populate("warehouseLocations");
+  Warehouse.find({}, (error, warehouses)=>{
+    if(error) throw error;
+    Item.findById(req.params.id, (err, result) => {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      res.render("item", { item: result, warehouses });
+      return;
+    }).populate("warehouseLocations");
+  })
+
 });
 
 router.put("/:id", (req, res) => {
+  console.log(req.body.tags);
+  console.log(req.body);
   Item.updateOne(
     { _id: req.params.id },
     {
@@ -46,7 +53,7 @@ router.put("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  let it = new Item({
+  let item = new Item({
     name: req.body.name,
     description: req.body.description,
     stock: req.body.stock,
@@ -54,7 +61,7 @@ router.post("/", (req, res) => {
     tags: req.body.tags,
     warehouseLocations: req.body.warehouseLocations,
   });
-  it.save((err, result) => {
+  item.save((err, result) => {
     if (err) throw err;
     res.status(201).send();
   });

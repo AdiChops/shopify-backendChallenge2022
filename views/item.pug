@@ -13,20 +13,33 @@ html(lang="en")
         h1 Item Details 
         i.pseudobtn#edit(class="fa fa-pencil" aria-hidden="true")
         p Name: 
-            input#name(type="text",name="name",value=`${item.name}` disabled)
+            input#name(type="text",name="name",value=item.name,disabled)
+            span.error.text-danger#nameError &times; The name field is required!
         p Price: $
-            input#price(type="number",min="0.01",name="price", step="0.01",value=`${parseFloat(item.price).toFixed(2)}` disabled)
+            input#price(type="number",min="0.00",name="price", step="0.01",value=parseFloat(item.price).toFixed(2),disabled)
+            span.error.text-danger#priceError &times; The price field is required and must be a value greater than or equal to 0.00!
         p Stock: 
-            input#stock(type="number",min="0",name="stock",value=`${item.stock}` disabled) 
+            input#stock(type="number",min="0",name="stock",value=item.stock,disabled) 
             |  in stock
+            span.error.text-danger#stockError &times; The stock field is required and must be an integer greater than or equal to 0!
         if item.tags.length > 0
             h4 Tags: 
-            each tag in item.tags 
-               span(class="badge badge-pill") #{tag}
-        if item.warehouseLocations.length > 0
-            h4 Warehouse Locations:
-            ul 
-                each warehouse in item.warehouseLocations 
-                    li #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
+            p#addingTags Add tags (separate tags by ',' or 'spaces'):    
+                input#tagAdd
+            #tags
+                each tag in item.tags 
+                    span(class="badge badge-pill") #{tag}
+            input#tagsHidden(type="hidden",name="hiddenTags",value=item.tags.join())
+            if item.warehouseLocations.length > 0
+                h4 Warehouse Locations:
+                ul 
+                    each warehouse in item.warehouseLocations 
+                        li #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
+            #wareLocs
+                each warehouse in warehouses
+                    p
+                        - s = (item.warehouseLocations.includes(warehouse))?"true":"false"
+                        input(type="checkbox", selected=s,id=warehouse._id) 
+                        |  #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
         button.btn.btn-primary#saveBtn Save
         button.btn.btn-danger#cancelBtn Cancel
