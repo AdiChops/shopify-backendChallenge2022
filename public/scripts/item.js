@@ -15,7 +15,7 @@ let deleteItem = ()=>{
       method: "DELETE"
     })
       .then((response) => {
-        if (response.status == 204) {
+        if (response.status === 204) {
           alert('Deleted successfully!')
           location.href="/items";
         } else {
@@ -29,8 +29,12 @@ let deleteItem = ()=>{
 }
 
 let resetDefaults = () => {
-  tags = document.getElementById("tagsHidden").value.split(",");
-  warehouses = document.getElementById("warehousesHidden").value.split(",");
+  tags = [];
+  if(document.getElementById("tagsHidden").value)
+    tags = document.getElementById("tagsHidden").value.split(",");
+  warehouses = []
+  if(document.getElementById("warehousesHidden").value)
+    warehouses = document.getElementById("warehousesHidden").value.split(",");
   document.getElementById("name").value = initialName;
   document.getElementById("stock").value = initialStock;
   document.getElementById("price").value = initialPrice;

@@ -13,7 +13,7 @@ html(lang="en")
         h1 Warehouse Information 
         i.pseudobtn.fa.fa-pencil#edit(aria-hidden="true")
         span &nbsp;&nbsp;| &nbsp;
-        i.text-danger.pseudobtn.fa.fa-trash#deleteItem(aria-hidden="true")
+        i.text-danger.pseudobtn.fa.fa-trash#delete(aria-hidden="true")
         p City: 
             input#city(name="city",value=`${warehouse.city}`, disabled) 
             span.error.text-danger#cityError &times; The city field is required!

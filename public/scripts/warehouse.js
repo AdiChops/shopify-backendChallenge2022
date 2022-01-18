@@ -100,9 +100,33 @@ let saveWarehouse = () => {
   }
 };
 
+let deleteWarehouse = ()=>{
+    let d = confirm("Are you sure you want to delete this item?");
+    if(d){
+    fetch(location.pathname, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.status === 204) {
+            alert('Deleted successfully!')
+            location.href="/items";
+          } else {
+            response.json().then((data)=>{
+                alert(`An error occurred: ${data.message}`);
+            })
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+};
+
 document.getElementById("edit").addEventListener("click", () => {
   toggleEdit(false);
 });
+
+document.getElementById("delete").addEventListener("click", deleteWarehouse);
 
 document.getElementById("cancelBtn").addEventListener("click", () => {
   resetDefaults();
