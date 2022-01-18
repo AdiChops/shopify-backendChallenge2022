@@ -11,7 +11,9 @@ html(lang="en")
         title #{item.name}
     body 
         h1 Item Details 
-        i.pseudobtn#edit(class="fa fa-pencil" aria-hidden="true")
+        i.pseudobtn.fa.fa-pencil#edit(aria-hidden="true")
+        span &nbsp;&nbsp;| &nbsp;
+        i.text-danger.pseudobtn.fa.fa-trash#deleteItem(aria-hidden="true")
         p Name: 
             input#name(type="text",name="name",value=item.name,disabled)
             span.error.text-danger#nameError &times; The name field is required!
@@ -22,24 +24,26 @@ html(lang="en")
             input#stock(type="number",min="0",name="stock",value=item.stock,disabled) 
             |  in stock
             span.error.text-danger#stockError &times; The stock field is required and must be an integer greater than or equal to 0!
+        p#addingTags Add tags (separate tags by ',' or 'spaces'):    
+            input#tagAdd
         if item.tags.length > 0
             h4 Tags: 
-            p#addingTags Add tags (separate tags by ',' or 'spaces'):    
-                input#tagAdd
-            #tags
-                each tag in item.tags 
-                    span(class="badge badge-pill") #{tag}
-            input#tagsHidden(type="hidden",name="hiddenTags",value=item.tags.join())
-            if item.warehouseLocations.length > 0
-                h4 Warehouse Locations:
-                ul 
-                    each warehouse in item.warehouseLocations 
-                        li #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
-            #wareLocs
-                each warehouse in warehouses
-                    p
-                        - s = (item.warehouseLocations.includes(warehouse))?"true":"false"
-                        input(type="checkbox", selected=s,id=warehouse._id) 
-                        |  #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
+        #tags
+            each tag in item.tags 
+                span.badge.badge-pill(id=`badge${tag}`) #{tag}
+                    span.removeTag(style="display:none;") &nbsp; &times;
+        - warehouseIds = item.warehouseLocations.map(w => w._id).join()
+        input#tagsHidden(type="hidden",name="hiddenTags",value=item.tags.join())
+        input#warehousesHidden(type="hidden",value=warehouseIds)
+        if item.warehouseLocations.length > 0
+            h4 Warehouse Locations:
+            ul#warehouses
+                each warehouse in item.warehouseLocations 
+                    li #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
+        #wareLocs
+            each warehouse in warehouses
+                p
+                    input.warehouseCheck(type="checkbox",checked=(warehouseIds.indexOf(warehouse._id)>-1?"checked":undefined),id=warehouse._id) 
+                    |  #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
         button.btn.btn-primary#saveBtn Save
         button.btn.btn-danger#cancelBtn Cancel

@@ -1,22 +1,30 @@
+body{
+    margin:auto;
+    width: 95%;
+}
+
 .pseudobtn:hover{
     opacity: 0.5;
     cursor: pointer;
 }
+.pseudobtn{
+    font-size: 1.5em;
+}
+
 .error{
     display: none;
     margin-left: 0.3em;
 }
-#addingTags{
-    display:none;
-}
 
-#saveBtn, #cancelBtn{
+#saveBtn, #cancelBtn, #addingTags, #wareLocs{
     display: none;
 }
+
 .badge{
     font-size: 1em;
     margin:0.5em;
 }
+
 .badge-pill:nth-of-type(n){
     background-color: rgb(238, 100, 36);
 }
@@ -27,4 +35,12 @@
 
 .badge-pill:nth-of-type(3n){
     background-color: rgb(24, 173, 116);
+}
+
+.removeTag:hover{
+    cursor:pointer;
+}
+
+.badge-pill:hover{
+    cursor:default;
 }
