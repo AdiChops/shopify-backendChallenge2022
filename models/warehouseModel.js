@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 /***** SCHEMA DEFINITION *****/
 let warehouseSchema = Schema({
 	streetNumber: {
-		type: Number, 
+		type: String, 
 		required: true
 	},
     streetName: {

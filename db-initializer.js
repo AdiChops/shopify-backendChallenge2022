@@ -6,7 +6,7 @@ const Warehouse = require("./models/warehouseModel");
 /***** OBJECT INIT *****/
 let warehouses = [
   new Warehouse({
-    streetNumber: 123,
+    streetNumber: "123",
     streetName: "Wilson St.",
     city: "Ottawa",
     province: "ON",
@@ -15,7 +15,7 @@ let warehouses = [
     country: "CA"
   }),
   new Warehouse({
-    streetNumber: 5387,
+    streetNumber: "5387",
     streetName: "Thompson Rd.",
     city: "Toronto",
     province: "ON",

@@ -9,6 +9,7 @@
   "author": "Aaditya Chopra",
   "license": "ISC",
   "dependencies": {
+    "country-list": "^2.2.0",
     "express": "^4.17.2",
     "mongoose": "^6.1.6",
     "pug": "^3.0.2",

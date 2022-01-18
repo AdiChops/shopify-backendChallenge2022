@@ -11,19 +11,31 @@ html(lang="en")
         title Warehouse Information
     body 
         h1 Warehouse Information 
-        i.pseudobtn#edit(class="fa fa-pencil" aria-hidden="true")
+        i.pseudobtn.fa.fa-pencil#edit(aria-hidden="true")
+        span &nbsp;&nbsp;| &nbsp;
+        i.text-danger.pseudobtn.fa.fa-trash#deleteItem(aria-hidden="true")
         p City: 
             input#city(name="city",value=`${warehouse.city}`, disabled) 
+            span.error.text-danger#cityError &times; The city field is required!
         p Street Number:
             input#streetNumber(name="streetNumber",value=`${warehouse.streetNumber}`, disabled) 
+            span.error.text-danger#streetNumberError &times; The street number field is required!
         p Street: 
             input#streetName(name="streetName",value=`${warehouse.streetName}`, disabled)
+            span.error.text-danger#streetNameError &times; The street name field is required!
         p Country: 
             input#country(name="country",value=`${(new Intl.DisplayNames(['en'], { type: 'region' })).of(warehouse.country)}`, disabled)
+            span.error.text-danger#countryError &times; The country field is required!
         p Province/State: 
             input#province(name="province",value=`${warehouse.province}`, disabled)
+            span.error.text-danger#provinceError &times; The province field is required!
         p Postal/ZIP Code: 
             input#postalCode(name="postalCode",value=`${warehouse.postalCode}`, disabled)
+            span.error.text-danger#postalCodeError &times; The postal/ZIP code field is required!
+        p Phone Number: 
+            input#phone(name="phone",maxlength=20,value=`${warehouse.phone}`, disabled)
+            span.error.text-danger#phoneError &times; The phone number field is required!
+        
         button.btn.btn-primary#saveBtn Save
         button.btn.btn-danger#cancelBtn Cancel
 
