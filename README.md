@@ -13,7 +13,7 @@ A bit about the project:
 - The extra feature that I have implemented in my project is the support for warehouses (CRUD and assigning them to items).
 
 ### Prerequisites
-1. Please ensure that [Node.js](https://google.com/) is installed. You may also choose to install `nvm` and install `Node.js` and `npm` through `nvm`. 
+1. Please ensure that [Node.js](https://nodejs.org/en/download/) is installed. You may also choose to install `nvm` and install `Node.js` and `npm` through `nvm`. The project was built with `Node.js` version 14.16.0 and `npm` version 7.19.1, but any `Node.js` version from 14.16.0 and on should work.
 2. Please ensure that [MongoDB](https://docs.mongodb.com/manual/installation/) is installed. I use version 4.4, but any version above and including 4.4 should work. You can optionally install MongoDBCompass if you wish to view the data in the database.
 3. Recommended: Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to clone the project with more ease
 3. You may choose to also install Postman to test the API.
