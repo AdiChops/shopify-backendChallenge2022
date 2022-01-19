@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 /***** APP SETUP *****/
 require('dotenv').config()
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3001;
 app.set("views");
 app.set("view engine", "pug");
 app.use(express.static("public"));
