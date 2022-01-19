@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 const Item = require("./models/itemModel");
 const Warehouse = require("./models/warehouseModel");
+require('dotenv').config()
 
 /***** OBJECT INIT *****/
 let warehouses = [
@@ -51,7 +52,7 @@ let items = [
 ];
 
 /***** DB CONNECTION *****/
-mongoose.connect("mongodb://localhost:27017/inventorySystem", {
+mongoose.connect(process.env.CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

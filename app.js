@@ -3,8 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 /***** APP SETUP *****/
+require('dotenv').config()
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;
 app.set("views");
 app.set("view engine", "pug");
 app.use(express.static("public"));
@@ -35,7 +36,7 @@ app.use((req, res, next)=>{
 })
 
 /***** DB CONNECTION *****/
-mongoose.connect("mongodb://localhost:27017/inventorySystem", {
+mongoose.connect(process.env.CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

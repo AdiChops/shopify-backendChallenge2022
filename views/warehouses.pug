@@ -4,13 +4,16 @@ html(lang="en")
         include ./partials/head.pug
         title Warehouses
     body 
-        h1 Warehouses 
+        h1 Warehouses
+        a.btn.btn-outline-success(href="/")
+            i.fas.fa-home
+            | Go Back Home
+        a.btn.btn-outline-dark(href="/warehouses/new")
+            i.fas.fa-plus 
+            | Add New Warehouse 
         if warehouses.length == 0
             p No warehouse locations found 
         else 
-            a.btn.btn-outline-dark(href="/warehouses/new")
-                i.fas.fa-plus 
-                | Add New Warehouse
             ul 
                 each warehouse of warehouses 
                     li 
