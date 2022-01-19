@@ -11,26 +11,45 @@ const router = express.Router();
 /**
  * Purpose: This function validate the request body before inserting to the database.
  * @param {*} body The JSON request body which contains the values submitted by the user
+ * @param {bool} isNew Flag for if it's a new insertion or an edit.
  * @returns an error message if there are errors that exist within the fields, blank otherwise.
  */
-let verifyFields = (body) => {
+let verifyFields = (body, isNew = true) => {
   errMessage = [];
-  if (!body.name) {
-    errMessage.push("Name is required");
+  if(isNew){
+    if (!body.name) {
+      errMessage.push("Name is required");
+    }
+    if (!body.description) {
+      errMessage.push("Description is required");
+    }
+    if (!body.stock) {
+      errMessage.push("Stock is required");
+    }
+    if (!body.price) {
+      errMessage.push("Price is required");
+    }
   }
-  if (!body.description) {
-    errMessage.push("Description is required");
+  else{
+    if (body.name === "") {
+      errMessage.push("Name is required");
+    }
+    if (body.description === "") {
+      errMessage.push("Description is required");
+    }
   }
-  if (!body.stock) {
-    errMessage.push("Stock is required");
-  }
-  if (!body.price) {
-    errMessage.push("Price is required");
-  } else {
-    if (isNaN(body.price)) {
+  if(body.price || body.price === ""){
+    if (body.price === "" || isNaN(body.price)) {
       errMessage.push("Price must be a number");
     } else if (parseFloat(body.price) < 0) {
       errMessage("Price must be at least 0.00");
+    }
+  }
+  if(body.stock || body.stock === ""){
+    if (body.stock === "" || isNaN(body.stock)) {
+      errMessage.push("Stock must be a number");
+    } else if (parseInt(body.stock) < 0) {
+      errMessage("Stock must be at least 0");
     }
   }
   return errMessage.join(", ");
@@ -81,7 +100,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-  let errMsg = verifyFields(req.body);
+  let errMsg = verifyFields(req.body, false);
   if (!errMsg) {
     Item.updateOne(
       { _id: req.params.id },
