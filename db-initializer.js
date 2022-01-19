@@ -28,7 +28,7 @@ let warehouses = [
 let items = [
   new Item({
     name: "Bicycle",
-    description: "Transportation device that requires pedalling.",
+    description: "Transportation device that requires pedaling.",
     stock: 0,
     price: 342.79,
     tags: ["exercise", "transportation", "adventure", "outdoors"],

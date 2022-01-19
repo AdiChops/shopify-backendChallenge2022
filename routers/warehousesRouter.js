@@ -61,6 +61,10 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/new", (req, res)=>{
+  return res.render("warehouse");
+});
+
 router.get("/:id", (req, res) => {
   Warehouse.findById(req.params.id, (err, result) => {
     if (err) {
@@ -123,7 +127,7 @@ router.post("/", (req, res) => {
           .status(500)
           .send({message: "An error occurred. There is a possibility of invalid data."});
       }
-      return res.status(201).send();
+      return res.status(201).send(warehouse);
     });
   }
   else{

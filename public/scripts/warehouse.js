@@ -17,7 +17,8 @@ let resetDefaults = () => {
 };
 
 let toggleEdit = (dis) => {
-  document.getElementById("edit").style.display = dis ? "block" : "none";
+  if(document.getElementById("edit"))
+    document.getElementById("edit").style.display = dis ? "block" : "none";
   document.getElementById("city").disabled = dis;
   document.getElementById("streetNumber").disabled = dis;
   document.getElementById("streetName").disabled = dis;
@@ -26,10 +27,11 @@ let toggleEdit = (dis) => {
   document.getElementById("postalCode").disabled = dis;
   document.getElementById("phone").disabled = dis;
   document.getElementById("saveBtn").style.display = dis ? "none" : "inline";
-  document.getElementById("cancelBtn").style.display = dis ? "none" : "inline";
+  if(document.getElementById("cancelBtn"))
+    document.getElementById("cancelBtn").style.display = dis ? "none" : "inline";
 };
 
-let saveWarehouse = () => {
+let saveWarehouse = (method, path) => {
   let errorsPresent = false;
   if (!document.getElementById("city").value) {
     errorsPresent = true;
@@ -61,13 +63,13 @@ let saveWarehouse = () => {
   }
   if (!errorsPresent) {
     let data = {
-      city: document.getElementById("city").value,
-      streetNumber: document.getElementById("streetNumber").value,
-      streetName: document.getElementById("streetName").value,
-      country: document.getElementById("country").value,
-      province: document.getElementById("province").value,
-      postalCode: document.getElementById("postalCode").value,
-      phone: document.getElementById("phone").value,
+      "city": document.getElementById("city").value,
+      "streetNumber": document.getElementById("streetNumber").value,
+      "streetName": document.getElementById("streetName").value,
+      "country": document.getElementById("country").value,
+      "province": document.getElementById("province").value,
+      "postalCode": document.getElementById("postalCode").value,
+      "phone": document.getElementById("phone").value,
     };
 
     document.getElementById("cityError").style.display = "none";
@@ -78,8 +80,8 @@ let saveWarehouse = () => {
     document.getElementById("postalCodeError").style.display = "none";
     document.getElementById("phoneError").style.display = "none";
 
-    fetch(location.pathname, {
-      method: "PUT",
+    fetch(path, {
+      method: method,
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +90,12 @@ let saveWarehouse = () => {
       .then((response) => {
         if (response.status == 200) {
           location.reload();
-        } else {
+        } 
+        else if(response.status == 201){
+          alert("Warehouse added successfully!");
+          location.href = "/warehouses";
+        }
+        else {
           response.json().then((data)=>{
               alert(`An error occurred: ${data.message}`);
           })
@@ -122,15 +129,27 @@ let deleteWarehouse = ()=>{
     }
 };
 
-document.getElementById("edit").addEventListener("click", () => {
+if(document.getElementById("edit") && document.getElementById("delete") && document.getElementById("cancelBtn")){
+  document.getElementById("edit").addEventListener("click", () => {
+    toggleEdit(false);
+  });
+
+  document.getElementById("delete").addEventListener("click", deleteWarehouse);
+
+  document.getElementById("cancelBtn").addEventListener("click", () => {
+    resetDefaults();
+    toggleEdit(true);
+  });
+}
+else{
   toggleEdit(false);
+}
+
+document.getElementById("saveBtn").addEventListener("click", ()=>{
+  if(document.getElementById("newWarehouse")){
+    saveWarehouse("POST", "/warehouses")
+  }
+  else{
+    saveWarehouse("PUT", location.pathname)
+  }
 });
-
-document.getElementById("delete").addEventListener("click", deleteWarehouse);
-
-document.getElementById("cancelBtn").addEventListener("click", () => {
-  resetDefaults();
-  toggleEdit(true);
-});
-
-document.getElementById("saveBtn").addEventListener("click", saveWarehouse);

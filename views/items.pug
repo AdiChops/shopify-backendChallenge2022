@@ -1,12 +1,17 @@
 doctype html
 html(lang="en")
     head
-        meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible", content="IE=edge")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        include ./partials/head.pug
         title Items
     body 
-        ul
-            each item of inventory
-                li
-                    a(href=`/items/${item._id}`) #{item.name}
+        h1 Items
+        a.btn.btn-outline-dark(href="/items/new")
+            i.fas.fa-plus
+            | Add New Item
+        if inventory.length == 0
+            p No items found 
+        else
+            ul
+                each item of inventory
+                    li
+                        a(href=`/items/${item._id}`) #{item.name}

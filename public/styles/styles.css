@@ -1,6 +1,7 @@
 body{
     margin:auto;
     width: 95%;
+    margin-top: 1em;
 }
 
 .pseudobtn:hover{

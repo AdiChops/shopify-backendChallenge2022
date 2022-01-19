@@ -1,15 +1,16 @@
 doctype html
 html(lang="en")
     head
-        meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible", content="IE=edge")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        include ./partials/head.pug
         title Warehouses
     body 
         h1 Warehouses 
         if warehouses.length == 0
             p No warehouse locations found 
         else 
+            a.btn.btn-outline-dark(href="/warehouses/new")
+                i.fas.fa-plus 
+                | Add New Warehouse
             ul 
                 each warehouse of warehouses 
                     li 

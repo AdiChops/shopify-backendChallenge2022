@@ -1,41 +1,46 @@
 doctype html
 html(lang="en")
     head
-        meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible", content="IE=edge")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
-        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
-        link(rel="stylesheet", href="/styles/styles.css")
+        include ./partials/head.pug
         script(src="/scripts/warehouse.js" defer="defer") 
-        title Warehouse Information
+        if warehouse
+            title Warehouse Information
+        else 
+            title New Warehouse
     body 
-        h1 Warehouse Information 
-        i.pseudobtn.fa.fa-pencil#edit(aria-hidden="true")
-        span &nbsp;&nbsp;| &nbsp;
-        i.text-danger.pseudobtn.fa.fa-trash#delete(aria-hidden="true")
+        a.btn.btn-outline-primary(href="/warehouses") 
+            i.fas.fa-arrow-left
+            | Back to All Warehouses
+        if warehouse
+            h1 Warehouse Information 
+            i.pseudobtn.fa.fa-pencil#edit(aria-hidden="true")
+            span &nbsp;&nbsp;| &nbsp;
+            i.text-danger.pseudobtn.fa.fa-trash#delete(aria-hidden="true")
+        else 
+            h1#newWarehouse New Warehouse
         p City: 
-            input#city(name="city",value=`${warehouse.city}`, disabled) 
+            input#city(name="city",value=((warehouse)?`${warehouse.city}`:''), disabled) 
             span.error.text-danger#cityError &times; The city field is required!
         p Street Number:
-            input#streetNumber(name="streetNumber",value=`${warehouse.streetNumber}`, disabled) 
+            input#streetNumber(name="streetNumber",value=((warehouse)?`${warehouse.streetNumber}`:''), disabled) 
             span.error.text-danger#streetNumberError &times; The street number field is required!
         p Street: 
-            input#streetName(name="streetName",value=`${warehouse.streetName}`, disabled)
+            input#streetName(name="streetName",value=((warehouse)?`${warehouse.streetName}`:''), disabled)
             span.error.text-danger#streetNameError &times; The street name field is required!
         p Country: 
-            input#country(name="country",value=`${(new Intl.DisplayNames(['en'], { type: 'region' })).of(warehouse.country)}`, disabled)
+            input#country(name="country",value=((warehouse)?`${(new Intl.DisplayNames(['en'], { type: 'region' })).of(warehouse.country)}`:''), disabled)
             span.error.text-danger#countryError &times; The country field is required!
         p Province/State: 
-            input#province(name="province",value=`${warehouse.province}`, disabled)
+            input#province(name="province",value=((warehouse)?`${warehouse.province}`:''), disabled)
             span.error.text-danger#provinceError &times; The province field is required!
         p Postal/ZIP Code: 
-            input#postalCode(name="postalCode",value=`${warehouse.postalCode}`, disabled)
+            input#postalCode(name="postalCode",value=((warehouse)?`${warehouse.postalCode}`:''), disabled)
             span.error.text-danger#postalCodeError &times; The postal/ZIP code field is required!
         p Phone Number: 
-            input#phone(name="phone",maxlength=20,value=`${warehouse.phone}`, disabled)
+            input#phone(name="phone",maxlength=20,value=((warehouse)?`${warehouse.phone}`:''), disabled)
             span.error.text-danger#phoneError &times; The phone number field is required!
         
         button.btn.btn-primary#saveBtn Save
-        button.btn.btn-danger#cancelBtn Cancel
+        if warehouse
+            button.btn.btn-danger#cancelBtn Cancel
 

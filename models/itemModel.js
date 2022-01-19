@@ -21,7 +21,7 @@ let itemSchema = Schema({
     price:{
         type: mongoose.Types.Decimal128, 
         required: true,
-        min: 0.01
+        min: 0.00
     },
     tags: [String],
     warehouseLocations: [{ 

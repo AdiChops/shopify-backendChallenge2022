@@ -1,49 +1,68 @@
 doctype html
 html(lang="en")
     head
-        meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible", content="IE=edge")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
-        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
-        link(rel="stylesheet", href="/styles/styles.css")
+        include ./partials/head.pug
         script(src="/scripts/item.js" defer="defer") 
-        title #{item.name}
+        if item
+            title #{item.name}
+        else 
+            title Create Item
     body 
-        h1 Item Details 
-        i.pseudobtn.fa.fa-pencil#edit(aria-hidden="true")
-        span &nbsp;&nbsp;| &nbsp;
-        i.text-danger.pseudobtn.fa.fa-trash#deleteItem(aria-hidden="true")
+        a.btn.btn-outline-primary(href="/items") 
+            i.fas.fa-arrow-left
+            | Back to All Items
+        if !item
+            h1#createItem New Item 
+        else
+            h1 Item Details
+            i.pseudobtn.fa.fa-pencil#edit(aria-hidden="true")
+            span &nbsp;&nbsp;| &nbsp;
+            i.text-danger.pseudobtn.fa.fa-trash#deleteItem(aria-hidden="true")
         p Name: 
-            input#name(type="text",name="name",value=item.name,disabled)
+            input#name(type="text",name="name",value=((item)?item.name:''),disabled)
             span.error.text-danger#nameError &times; The name field is required!
+        p Description:
+            textarea#description(disabled)
+                if item
+                    | #{item.description}
+            span.error.text-danger#descriptionError &times; The description field is required!
         p Price: $
-            input#price(type="number",min="0.00",name="price", step="0.01",value=parseFloat(item.price).toFixed(2),disabled)
+            input#price(type="number",min="0.00",name="price", step="0.01",value=((item)?parseFloat(item.price).toFixed(2):''),disabled)
             span.error.text-danger#priceError &times; The price field is required and must be a value greater than or equal to 0.00!
         p Stock: 
-            input#stock(type="number",min="0",name="stock",value=item.stock,disabled) 
+            input#stock(type="number",min="0",name="stock",value=((item)?item.stock:''),disabled) 
             |  in stock
             span.error.text-danger#stockError &times; The stock field is required and must be an integer greater than or equal to 0!
-        p#addingTags Add tags (separate tags by ',' or 'spaces'):    
-            input#tagAdd
-        if item.tags.length > 0
-            h4 Tags: 
+        #addingTags
+            h4 Add Tags:
+            p Add tags (separate tags by ',' or 'spaces'):    
+                input#tagAdd
+        if item
+            if item.tags.length > 0
+                h4 Tags: 
         #tags
-            each tag in item.tags 
-                span.badge.badge-pill(id=`badge${tag}`) #{tag}
-                    span.removeTag(style="display:none;") &nbsp; &times;
-        - warehouseIds = item.warehouseLocations.map(w => w._id).join()
-        input#tagsHidden(type="hidden",name="hiddenTags",value=item.tags.join())
-        input#warehousesHidden(type="hidden",value=warehouseIds)
-        if item.warehouseLocations.length > 0
-            h4 Warehouse Locations:
-            ul#warehouses
-                each warehouse in item.warehouseLocations 
-                    li #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
+            if item
+                each tag in item.tags 
+                    span.badge.badge-pill(id=`badge${tag}`) #{tag}
+                        span.removeTag(style="display:none;") &nbsp; &times;
+        if item
+            - warehouseIds = item.warehouseLocations.map(w => w._id).join()
+            input#tagsHidden(type="hidden",name="hiddenTags",value=item.tags.join())
+            input#warehousesHidden(type="hidden",value=warehouseIds)
+            if item.warehouseLocations.length > 0
+                h4 Warehouse Locations:
+                ul#warehouses
+                    each warehouse in item.warehouseLocations 
+                        li #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
         #wareLocs
+            h4 Select Warehouse Locations:
             each warehouse in warehouses
                 p
-                    input.warehouseCheck(type="checkbox",checked=(warehouseIds.indexOf(warehouse._id)>-1?"checked":undefined),id=warehouse._id) 
+                    input.warehouseCheck(type="checkbox",checked=(item && warehouseIds.indexOf(warehouse._id)>-1?"checked":undefined),id=warehouse._id) 
                     |  #{warehouse.city} (#{warehouse.streetNumber} #{warehouse.streetName})
+            if warehouses.length == 0
+                p No warehouses found.
+                    a(href="/warehouses/new") Create one here!
         button.btn.btn-primary#saveBtn Save
-        button.btn.btn-danger#cancelBtn Cancel
+        if item
+            button.btn.btn-danger#cancelBtn Cancel
