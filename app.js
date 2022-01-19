@@ -11,6 +11,9 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+/**
+ * Purpose: This middleware function logs incoming requests.
+ */
 app.use((req, res, next) => {
   console.log(`${req.method}: ${req.path}`);
   next();
@@ -25,6 +28,11 @@ app.use("/warehouses", warehousesRouter);
 app.get("/", (req, res) => {
   res.render('home.pug');
 });
+
+// in the case where the path is not recognized
+app.use((req, res, next)=>{
+  return res.status(404).send("Resource not found!");
+})
 
 /***** DB CONNECTION *****/
 mongoose.connect("mongodb://localhost:27017/inventorySystem", {

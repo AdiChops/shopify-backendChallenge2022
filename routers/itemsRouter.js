@@ -7,6 +7,12 @@ const Warehouse = require("../models/warehouseModel");
 const router = express.Router();
 
 /***** HELPER FUNCTIONS *****/
+
+/**
+ * Purpose: This function validate the request body before inserting to the database.
+ * @param {*} body The JSON request body which contains the values submitted by the user
+ * @returns an error message if there are errors that exist within the fields, blank otherwise.
+ */
 let verifyFields = (body) => {
   errMessage = [];
   if (!body.name) {
@@ -36,29 +42,40 @@ router.get("/", (req, res) => {
       console.log(err);
       return res.status(500).send({ message: "An error occurred." });
     }
-    res.render("items", { inventory: result });
-    return;
+    return res.render("items", { inventory: result });
   });
 });
 
-router.get("/new", (req, res)=>{
+router.get("/new", (req, res) => {
   Warehouse.find({}, (error, warehouses) => {
-    if (error) return res.status(500).send({ message: "An error occurred." });
-    return res.render("item", {warehouses});
+    if (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .send({message: "An error occurred."});
+    }
+    return res.render("item", { warehouses });
   });
 });
 
 router.get("/:id", (req, res) => {
   Warehouse.find({}, (error, warehouses) => {
-    if (error) return res.status(500).send({ message: "An error occurred." });
+    if (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .send({message: "An error occurred."});
+    }
     Item.findById(req.params.id, (err, result) => {
       if (err) {
-        return res.status(500).send({
-          message: "An error occurred.",
-        });
+        console.log(err);
+        return res
+          .status(500)
+          .send({message: "An error occurred."});
       }
-      res.render("item", { item: result, warehouses });
-      return;
+      if(!result)
+        return res.status(404).send("Item not found");
+      return res.render("item", { item: result, warehouses });
     }).populate("warehouseLocations");
   });
 });
@@ -77,12 +94,13 @@ router.put("/:id", (req, res) => {
         warehouseLocations: req.body.warehouseLocations,
       },
       (err, result) => {
-        if (err)
-          return res.status(500).send({
-            message:
-              "An error occurred. There is a possibility of invalid data.",
-          });
-        res.status(200).send();
+        if (err) {
+          console.log(err);
+          return res
+            .status(500)
+            .send({message: "An error occurred. There is a possibility of invalid data."});
+        }
+        return res.status(200).send();
       }
     );
   } else {
@@ -102,25 +120,28 @@ router.post("/", (req, res) => {
       warehouseLocations: req.body.warehouseLocations,
     });
     item.save((err, result) => {
-      if (err)
+      if (err) {
+        console.log(err);
         return res
           .status(500)
-          .send({
-            message:
-              "An error occurred. There is a possibility of invalid data.",
-          });
-      res.status(201).send(item);
+          .send({message: "An error occurred. There is a possibility of invalid data."});
+      }
+      return res.status(201).send(item);
     });
-  }
-  else{
+  } else {
     return res.status(400).send({ message: errMsg });
   }
 });
 
 router.delete("/:id", (req, res) => {
   Item.deleteOne({ _id: req.params.id }, (err, result) => {
-    if (err) throw err;
-    res.status(204).send();
+    if (err) {
+      console.log(err);
+      return res
+        .status(500)
+        .send({message: "An error occurred. There is a possibility of invalid data."});
+    }
+    return res.status(204).send();
   });
 });
 

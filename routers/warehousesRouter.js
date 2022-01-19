@@ -8,6 +8,12 @@ const Warehouse = require("../models/warehouseModel");
 const router = express.Router();
 
 /***** HELPER FUNCTIONS *****/
+
+/**
+ * Purpose: This function validate the request body before inserting to the database.
+ * @param {*} body The JSON request body which contains the values submitted by the user
+ * @returns an error message if there are errors that exist within the fields, blank otherwise.
+ */
 let verifyFields = (body) => {
   errMessage = [];
   if (!body.streetNumber) {
@@ -41,6 +47,13 @@ let verifyFields = (body) => {
   return errMessage.join(", ");
 };
 
+/**
+ * Purpose: This function returns a country's name alias which may fail validation otherwise 
+ * (e.g. United States fails validation, but United States of America works, but since United States is an acceptable value, it is replaced by United States of America).
+ * More countries can be added as more aliases are needed.
+ * @param {*} country The country for which we verify the alias.
+ * @returns the country alias, the inputted country otherwise
+ */
 let countryAlias = (country)=>{
   let countryAliases = {"United States":"United States of America"};
   let ret = countryAliases[country];
@@ -54,10 +67,11 @@ router.get("/", (req, res) => {
   Warehouse.find((err, result) => {
     if (err) {
       console.log(err);
-      throw err;
+      return res
+        .status(500)
+        .send({message: "An error occurred."});
     }
-    res.render("warehouses", { warehouses: result });
-    return;
+    return res.render("warehouses", { warehouses: result });
   });
 });
 
@@ -69,10 +83,13 @@ router.get("/:id", (req, res) => {
   Warehouse.findById(req.params.id, (err, result) => {
     if (err) {
       console.log(err);
-      throw err;
+      return res
+        .status(500)
+        .send({message: "An error occurred."});
     }
-    res.render("warehouse", { warehouse: result });
-    return;
+    if(!result)
+      return res.status(404).send("Warehouse not found");
+    return res.render("warehouse", { warehouse: result });
   });
 });
 
@@ -94,9 +111,10 @@ router.put("/:id", (req, res) => {
       },
       (err, result) => {
         if (err) {
+          console.log(err);
           return res
             .status(500)
-            .send({message:"An error occurred. There is a possibility of invalid data."});
+            .send({message: "An error occurred. There is a possibility of invalid data."});
         }
         return res.status(200).send();
       }
@@ -123,6 +141,7 @@ router.post("/", (req, res) => {
     });
     warehouse.save((err, result) => {
       if (err) {
+        console.log(err);
         return res
           .status(500)
           .send({message: "An error occurred. There is a possibility of invalid data."});
@@ -137,7 +156,12 @@ router.post("/", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   Warehouse.deleteOne({ _id: req.params.id }, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      return res
+        .status(500)
+        .send({message: "An error occurred."});
+    }
     res.status(204).send();
   });
 });

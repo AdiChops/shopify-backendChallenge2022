@@ -1,7 +1,7 @@
 {
   "name": "shopify-backendchallenge2022",
   "version": "1.0.0",
-  "description": "Shopify Backend Internship challenge 2022.",
+  "description": "Shopify Backend Internship Challenge 2022.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
