@@ -137,7 +137,7 @@ router.put("/:id", (req, res) => {
               "An error occurred. There is a possibility of invalid data.",
           });
         }
-        return res.status(200).send();
+        return res.status(204).send();
       }
     );
   } else {

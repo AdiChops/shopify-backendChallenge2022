@@ -101,7 +101,8 @@ let saveWarehouse = (method, path) => {
       },
     })
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status == 204) {
+          alert("Warehouse updated successfully!");
           location.reload();
         } else if (response.status == 201) {
           alert("Warehouse added successfully!");

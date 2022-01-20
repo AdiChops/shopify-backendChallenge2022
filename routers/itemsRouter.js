@@ -119,7 +119,7 @@ router.put("/:id", (req, res) => {
             .status(500)
             .send({message: "An error occurred. There is a possibility of invalid data."});
         }
-        return res.status(200).send();
+        return res.status(204).send();
       }
     );
   } else {
